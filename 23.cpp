@@ -1,23 +1,25 @@
-#include <iostream>
 #include<string>
+#include<iostream>
+#include<random>
+#include<vector>
 using namespace std;
 
 class SavingsAccount{
     public:
-    const string name;
+    string name;
     const int accno;
-    int balance;
-    static int rate;
-    static int totalInterest;
+    double balance;
+    static int accnumbers;
+    static double rate;
+    static double totalInterest;
     
-    SavingsAccount() : name("") , accno(0) {
-        balance =0;
-    }
-    SavingsAccount( string n,  int acc, int bal) : name(n), accno(acc){
-        bal = balance;
+    
+
+    SavingsAccount(  string n, double bal) : name(n), accno(accnumbers) ,balance(bal){
+       accnumbers++;
     }
 
-    int withdraw(int amount){
+    double withdraw(double amount){
         if (balance - amount < 1000){
             cout << "insufficient balance"<<endl;
             return balance;
@@ -25,11 +27,11 @@ class SavingsAccount{
         return balance -= amount;
         
     }
-    int deposit(int amount){
+    double deposit(double amount){
         return balance +=amount;
     }
-    int interestpaid(){
-        int interest = (rate)/100 * balance;
+    double interestpaid(){
+        double interest = (rate)/100 * balance;
         totalInterest += interest;
         return interest;
     }
@@ -42,15 +44,24 @@ class SavingsAccount{
     }
 };
 
-int SavingsAccount :: rate =7;
-int SavingsAccount :: totalInterest=0;
+double SavingsAccount :: rate =7.0;
+double SavingsAccount :: totalInterest=0.0;
+int SavingsAccount :: accnumbers=100001;
 
 int main(){
-    const int size =10;
-    SavingsAccount arr[size];
-    for (int i=0; i<size; i++){
-        string name = to_string(i+1);
-        arr[i] = SavingsAccount(name, 1000000+i, 1000+i);
+
+    const int size =3;
+    vector <SavingsAccount *> accounts;
+    string name;
+    for (int i  = 0; i < size; i++){
+        cout << "enter name for the account " << SavingsAccount::accnumbers << endl;
+        cin >> name;
+        SavingsAccount* temp = new SavingsAccount(name, 1000+i);
+        accounts.push_back(temp);
     }
 
+    for (int i  = 0; i < size ;i++){
+        accounts[i]->display();
+    }
+    cout << "total interest paid out = "<< SavingsAccount:: totalInterest << endl;
 }
